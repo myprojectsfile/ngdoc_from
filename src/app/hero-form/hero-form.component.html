@@ -1,0 +1,54 @@
+<div class="container" [hidden]="submitted">
+  <h1>Hero Form</h1>
+  <form #heroForm="ngForm" (ngSubmit)="onSubmit()">
+    {{diagnostic}}
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input #spy type="text" #name="ngModel" class="form-control" id="name" name="name" [(ngModel)]="model.name" minlength="4"
+        maxlength="24" required>
+    </div>
+    <div class="alert alert-danger" *ngIf="name.errors && (name.dirty || name.touched)">
+      <div [hidden]="!name.errors.required">
+        name is required
+      </div>
+      <div [hidden]="!name.errors.minlength">
+        name must at least 4 character
+      </div>
+      <div [hidden]="!name.errors.maxlength">
+        name canot be more than 24 character
+      </div>
+    </div>
+    <br>{{name.className}}<br>
+    <div class="form-group">
+      <label for="alterEgo">Alter Ego</label>
+      <input type="text" class="form-control" id="alterEgo" name="alterEgo" [(ngModel)]="model.alterEgo">
+    </div>
+
+    <div class="form-group">
+      <label for="power">Hero Power</label>
+      <select class="form-control" id="power" name="power" required [(ngModel)]="model.power">
+        <option *ngFor="let pow of powers" [value]="pow" >{{pow}}</option>
+      </select>
+    </div>
+
+    <button type="submit" [disabled]="heroForm.form.invalid" class="btn btn-success">Submit</button>
+    <button class="btn btn-default" (click)="newHero();heroForm.reset()">New Hero</button>
+  </form>
+</div>
+<div class="container" [hidden]="!submitted">
+  <h2>You submitted the following:</h2>
+  <div class="row">
+    <div class="col-xs-3">Name</div>
+    <div class="col-xs-9  pull-left">{{ model.name }}</div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3">Alter Ego</div>
+    <div class="col-xs-9 pull-left">{{ model.alterEgo }}</div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3">Power</div>
+    <div class="col-xs-9 pull-left">{{ model.power }}</div>
+  </div>
+  <br>
+  <button class="btn btn-primary" (click)="submitted=false">Edit</button>
+</div>
